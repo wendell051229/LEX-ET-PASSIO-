@@ -1,270 +1,153 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lex et Passio | Doctrina & Futuro</title>
-    
-    <!-- React y ReactDOM (El motor de la app) -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
-    <!-- Babel (Para traducir el código moderno) -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Tailwind CSS (Para el diseño bonito) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        rose: { 700: '#be123c', 900: '#881337' },
-                        slate: { 800: '#1e293b', 900: '#0f172a' }
-                    },
-                    fontFamily: {
-                        serif: ['Georgia', 'Times New Roman', 'serif'],
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        /* Animaciones suaves */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lex et Passion — Ley y Pasión</title>
+  <meta name="description" content="Lex et Passion — Doctrina clásica y doctrinas innovadoras en derecho. Estudiantes: Wendell Odisio Luna (UPC) y Pamela Huaquira Aquino (UPN)." />
+  <style>
+    :root{
+      --red:#b80000;
+      --white:#ffffff;
+      --muted:#f6f6f6;
+      --max-width:1100px;
+      --radius:16px;
+      --gap:18px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,var(--white),var(--muted));color:#111}
+    .container{max-width:var(--max-width);margin:36px auto;padding:28px}
+
+    header{display:flex;align-items:center;gap:18px}
+    .brand{display:flex;flex-direction:column}
+    .logo{display:flex;align-items:center;gap:12px}
+    .mark{width:64px;height:64px;border-radius:12px;background:var(--red);display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:18px;box-shadow:0 6px 18px rgba(184,0,0,0.18)}
+    h1{margin:0;font-size:22px}
+    .subtitle{color:#5a5a5a;margin-top:6px;font-size:13px}
+
+    nav{margin-left:auto}
+    .nav-inner{display:flex;gap:12px}
+    .btn{padding:10px 14px;border-radius:10px;background:transparent;border:1px solid transparent;font-weight:600}
+    .btn.primary{background:var(--red);color:var(--white)}
+
+    main{display:grid;grid-template-columns:1fr 380px;gap:22px;margin-top:22px}
+
+    .card{background:var(--white);border-radius:var(--radius);padding:18px;box-shadow:0 8px 30px rgba(0,0,0,0.06)}
+    .section-title{display:flex;align-items:baseline;gap:12px}
+    .section-title h2{margin:0;font-size:18px}
+    .muted{color:#666;font-size:13px}
+
+    /* left column */
+    .content{display:flex;flex-direction:column;gap:16px}
+    .columns{display:flex;gap:12px}
+    .doctrine{padding:14px;border-radius:12px;border:1px solid #eee}
+    .doctrine h3{margin:0 0 8px 0}
+    .placeholder{color:#444;font-size:14px;line-height:1.5}
+
+    /* article embed */
+    .article-embed{height:640px;border-radius:12px;overflow:hidden;border:1px solid #eaeaea}
+    .article-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+
+    /* right column */
+    .sidebar{display:flex;flex-direction:column;gap:12px}
+    .authors{display:flex;flex-direction:column;gap:6px}
+    .author{font-weight:600}
+    .institutions{font-size:13px;color:#666}
+
+    footer{margin-top:24px;text-align:center;color:#666;font-size:13px}
+
+    @media (max-width:980px){
+      main{grid-template-columns:1fr;}
+      .article-embed{height:520px}
+    }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans">
-    <div id="root"></div>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="mark">LxP</div>
+        <div class="brand">
+          <h1>Lex et Passion</h1>
+          <div class="subtitle">Ley y pasión — Espacio académico y crítico sobre derecho</div>
+        </div>
+      </div>
+      <nav>
+        <div class="nav-inner">
+          <a class="btn" href="#doctrina-clasica">Doctrina clásica</a>
+          <a class="btn" href="#doctrina-innovadora">Doctrina innovadora</a>
+          <a class="btn primary" href="#articulo">Ver artículo</a>
+        </div>
+      </nav>
+    </header>
 
-    <script type="text/babel">
-        // --- DATA & CONFIGURACIÓN ---
-        const AUTHORS = {
-            WENDELL: "Wendell Odicio Luna",
-            PAMELA: "Pamela Huaquira Aquino",
-        };
-
-        // Iconos SVG (Manuales para no requerir instalaciones)
-        const Icons = {
-            Scale: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2v2H3z"/><path d="M19 7h2v2h-2z"/></svg>,
-            Flame: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.1.2-2.2.6-3a1 1 0 0 0 .9 2.5z"/></svg>,
-            ChevronRight: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>,
-            ArrowRight: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>,
-            Menu: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>,
-            X: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
-            Search: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-        };
-
-        const articles = [
-            {
-                id: 1,
-                title: "El Artículo 404 del Código Penal: Entre la influencia real y la simulada",
-                section: "Doctrina",
-                category: "Penal",
-                author: AUTHORS.WENDELL,
-                date: "25 Oct, 2023",
-                readTime: "8 min",
-                excerpt: "Un análisis dogmático sobre el delito de tráfico de influencias. ¿Es necesario que el autor tenga realmente el poder que invoca?",
-                content: "La figura del tráfico de influencias protege la objetividad de la administración pública. En nuestra legislación, se distingue entre quien tiene capacidad real de decisión y quien simplemente la simula para obtener un beneficio...",
-                tags: ["Derecho Penal", "Corrupción", "Art. 404"]
-            },
-            {
-                id: 2,
-                title: "Inteligencia Artificial Generativa: El reto de la propiedad intelectual",
-                section: "Vanguardia",
-                category: "Tech",
-                author: AUTHORS.PAMELA,
-                date: "12 Nov, 2023",
-                readTime: "6 min",
-                excerpt: "¿A quién pertenecen los derechos de una obra creada por Midjourney o ChatGPT? Un vacío legal que urge resolver.",
-                content: "La legislación peruana de derechos de autor se basa en la autoría humana como pilar fundamental. Sin embargo, las obras generadas por IA carecen de este elemento subjetivo...",
-                tags: ["IA", "Propiedad Intelectual", "Copyright"]
-            },
-            {
-                id: 3,
-                title: "Despido en la era del Zoom: La prueba digital",
-                section: "Doctrina",
-                category: "Laboral",
-                author: AUTHORS.WENDELL,
-                date: "15 Nov, 2023",
-                readTime: "7 min",
-                excerpt: "Validez probatoria de las grabaciones de videollamadas y chats corporativos en procesos de despido arbitrario.",
-                content: "La jurisprudencia reciente ha comenzado a admitir capturas de Slack y WhatsApp como medios probatorios válidos, siempre que se garantice la cadena de custodia...",
-                tags: ["Derecho Laboral", "Prueba Digital", "Despido"]
-            }
-        ];
-
-        // --- COMPONENTES ---
-
-        const ArticleCard = ({ article, onClick }) => {
-            const isDoctrina = article.section === 'Doctrina';
-            return (
-                <div 
-                    onClick={() => onClick(article)}
-                    className="group relative flex flex-col h-full bg-white border border-slate-200 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer"
-                >
-                    <div className={`h-1 w-full ${isDoctrina ? 'bg-slate-800' : 'bg-rose-700'}`} />
-                    <div className="p-6 flex flex-col flex-grow">
-                        <div className="flex justify-between items-start mb-4">
-                            <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded ${isDoctrina ? 'bg-slate-100 text-slate-600' : 'bg-rose-50 text-rose-700'}`}>
-                                {article.category}
-                            </span>
-                            <span className="text-xs text-slate-400 font-medium">{article.date}</span>
-                        </div>
-                        <h3 className={`text-xl font-serif font-bold text-slate-900 mb-3 leading-tight ${isDoctrina ? 'group-hover:text-slate-700' : 'group-hover:text-rose-700'} transition-colors`}>
-                            {article.title}
-                        </h3>
-                        <p className="text-sm text-slate-600 mb-6 line-clamp-3 leading-relaxed flex-grow">
-                            {article.excerpt}
-                        </p>
-                        <div className="flex items-center justify-between mt-auto pt-4 border-t border-slate-100">
-                            <div className="text-xs font-medium text-slate-500">
-                                Por <span className="text-slate-900">{article.author}</span>
-                            </div>
-                            <div className={`p-1 rounded-full ${isDoctrina ? 'bg-slate-100' : 'bg-rose-50'} group-hover:scale-110 transition-transform`}>
-                                <Icons.ChevronRight />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        const ArticleDetail = ({ article, onBack }) => (
-            <div className="animate-fade-in">
-                <button onClick={onBack} className="mb-8 flex items-center text-sm font-medium text-slate-500 hover:text-rose-700 transition-colors group">
-                    <span className="rotate-180 mr-2 inline-block"><Icons.ArrowRight /></span> Volver
-                </button>
-                <article className="bg-white rounded-2xl p-8 md:p-12 shadow-sm border border-slate-200">
-                    <header className="mb-10 text-center max-w-3xl mx-auto">
-                        <div className="flex justify-center gap-2 mb-6">
-                            <span className="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold uppercase tracking-wider rounded-full">{article.section}</span>
-                        </div>
-                        <h1 className="text-3xl md:text-4xl font-serif font-bold text-slate-900 mb-6 leading-tight">{article.title}</h1>
-                        <div className="flex items-center justify-center space-x-4 text-sm text-slate-500 border-t border-b border-slate-100 py-4">
-                            <span className="font-medium text-slate-900">{article.author}</span>
-                            <span>•</span>
-                            <span>{article.date}</span>
-                        </div>
-                    </header>
-                    <div className="prose prose-slate prose-lg max-w-3xl mx-auto font-serif text-slate-800 leading-loose">
-                        <p className="font-sans text-xl text-slate-600 font-light mb-8 italic">"{article.excerpt}"</p>
-                        <p>{article.content}</p>
-                    </div>
-                </article>
+    <main>
+      <section class="content">
+        <div class="card" id="doctrina-clasica">
+          <div class="section-title"><h2>Doctrina clásica</h2><div class="muted">Interpretaciones y textos canónicos relevantes para Perú</div></div>
+          <div class="columns" style="margin-top:12px">
+            <div class="doctrine" style="flex:1">
+              <h3>Descripción</h3>
+              <p class="placeholder">Aquí se recopilarán textos clásicos, jurisprudencia y artículos doctrinales ya estudiados y desarrollados, con especial foco en su relevancia para el Perú. (Ej. comentarios a la Constitución, análisis de códigos, doctrina tradicional.)</p>
             </div>
-        );
+            <div class="doctrine" style="width:240px">
+              <h3>Etiquetas</h3>
+              <p class="muted">Derecho constitucional · Derecho civil · Derecho administrativo</p>
+            </div>
+          </div>
+        </div>
 
-        const App = () => {
-            const [activeTab, setActiveTab] = React.useState('home');
-            const [selectedArticle, setSelectedArticle] = React.useState(null);
-            const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+        <div class="card" id="doctrina-innovadora">
+          <div class="section-title"><h2>Doctrina innovadora</h2><div class="muted">Ramas emergentes: IA, regulación ausente y propuestas normativas</div></div>
+          <div style="margin-top:12px">
+            <p class="placeholder">Sección destinada a estudios sobre nuevas problemáticas jurídicas no reguladas aún (p. ej. inteligencia artificial, responsabilidad algorítmica, gobernanza de datos, derechos digitales). Aquí iremos publicando propuestas, ensayos y proyectos de norma.</p>
+          </div>
+        </div>
 
-            const filteredArticles = articles.filter(a => {
-                if (activeTab === 'home') return true;
-                if (activeTab === 'vanguardia' && a.section !== 'Vanguardia') return false;
-                if (activeTab === 'doctrina' && a.section !== 'Doctrina') return false;
-                return true;
-            });
+        <div class="card" id="articulo">
+          <div class="article-meta">
+            <div>
+              <strong>Artículo:</strong> "El negocio invisible de la corrupción: un análisis sobre el tráfico de influencias" — Wendell Odisio Luna
+            </div>
+            <div class="muted">PDF original embebido abajo — texto íntegro sin modificaciones</div>
+          </div>
 
-            const handleNav = (tab) => {
-                setActiveTab(tab);
-                setSelectedArticle(null);
-                setMobileMenuOpen(false);
-                window.scrollTo(0, 0);
-            };
+          <!-- PDF embed: the uploaded file path is used here so GitHub/Vercel tooling can replace it with a hosted URL. -->
+          <div class="article-embed">
+            <iframe src="/mnt/data/El negocio invisible de la corrupción WOL (1).pdf" title="Artículo - Wendell Odisio Luna" width="100%" height="100%" style="border:0"></iframe>
+          </div>
 
-            return (
-                <div className="min-h-screen flex flex-col">
-                    <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <div className="flex justify-between items-center h-20">
-                                <div onClick={() => handleNav('home')} className="flex items-center cursor-pointer group">
-                                    <div className="mr-3 text-slate-900 group-hover:text-rose-700 transition-colors">
-                                        <Icons.Scale />
-                                    </div>
-                                    <div>
-                                        <h1 className="text-xl md:text-2xl font-serif font-black tracking-tighter text-slate-900 flex items-center">
-                                            LEX <span className="text-rose-700 mx-1">&</span> PASSIO
-                                        </h1>
-                                        <p className="hidden md:block text-[10px] uppercase tracking-[0.2em] text-slate-400 font-medium">Doctrina & Vanguardia</p>
-                                    </div>
-                                </div>
-                                <div className="hidden md:flex space-x-8">
-                                    <button onClick={() => handleNav('home')} className={`text-sm font-bold uppercase tracking-wide transition-colors ${activeTab === 'home' ? 'text-rose-700' : 'text-slate-500 hover:text-slate-900'}`}>Inicio</button>
-                                    <button onClick={() => handleNav('doctrina')} className={`text-sm font-bold uppercase tracking-wide transition-colors ${activeTab === 'doctrina' ? 'text-slate-900' : 'text-slate-500 hover:text-slate-900'}`}>Doctrina</button>
-                                    <button onClick={() => handleNav('vanguardia')} className={`text-sm font-bold uppercase tracking-wide transition-colors ${activeTab === 'vanguardia' ? 'text-rose-700' : 'text-slate-500 hover:text-rose-700'}`}>Vanguardia</button>
-                                    <button onClick={() => handleNav('about')} className={`text-sm font-bold uppercase tracking-wide transition-colors ${activeTab === 'about' ? 'text-slate-900' : 'text-slate-500 hover:text-slate-900'}`}>Autores</button>
-                                </div>
-                                <div className="md:hidden">
-                                    <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-slate-600">
-                                        {mobileMenuOpen ? <Icons.X /> : <Icons.Menu />}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        {mobileMenuOpen && (
-                            <div className="md:hidden bg-white border-t border-slate-100 absolute w-full shadow-lg z-50 p-4 space-y-2">
-                                <button onClick={() => handleNav('home')} className="block w-full text-left p-3 rounded-lg hover:bg-slate-50 font-bold">Inicio</button>
-                                <button onClick={() => handleNav('doctrina')} className="block w-full text-left p-3 rounded-lg hover:bg-slate-50 font-bold">Doctrina</button>
-                                <button onClick={() => handleNav('vanguardia')} className="block w-full text-left p-3 rounded-lg hover:bg-rose-50 font-bold text-rose-700">Vanguardia</button>
-                                <button onClick={() => handleNav('about')} className="block w-full text-left p-3 rounded-lg hover:bg-slate-50 font-bold">Autores</button>
-                            </div>
-                        )}
-                    </nav>
+          <p style="margin-top:12px;font-size:13px;color:#444">Descargar PDF: <a href="/mnt/data/El negocio invisible de la corrupción WOL (1).pdf" download>El negocio invisible de la corrupción — WOL (PDF)</a></p>
+          <p style="margin-top:8px;color:#666;font-size:13px">Autores: <span class="author">Wendell Odisio Luna</span> · Pamela Huaquira Aquino</p>
+        </div>
 
-                    <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-                        {selectedArticle ? (
-                            <ArticleDetail article={selectedArticle} onBack={() => setSelectedArticle(null)} />
-                        ) : activeTab === 'about' ? (
-                            <div className="max-w-4xl mx-auto text-center">
-                                <h2 className="text-4xl font-serif font-bold text-slate-900 mb-4">Autores</h2>
-                                <p className="text-lg text-slate-600 mb-12">Estudiantes de la UPC apasionados por el Derecho.</p>
-                                <div className="grid md:grid-cols-2 gap-8 text-left">
-                                    <div className="bg-white p-8 rounded-xl border-t-4 border-slate-900 shadow-sm">
-                                        <h3 className="text-2xl font-serif font-bold text-slate-900">{AUTHORS.WENDELL}</h3>
-                                        <p className="text-slate-500 text-sm font-bold uppercase tracking-wider mb-4">Penal & Tributario</p>
-                                        <p className="text-slate-600">Enfocado en el análisis riguroso de la norma (Lex).</p>
-                                    </div>
-                                    <div className="bg-white p-8 rounded-xl border-t-4 border-rose-700 shadow-sm">
-                                        <h3 className="text-2xl font-serif font-bold text-slate-900">{AUTHORS.PAMELA}</h3>
-                                        <p className="text-rose-700 text-sm font-bold uppercase tracking-wider mb-4">Civil & Tech</p>
-                                        <p className="text-slate-600">La pasión (Passio) por lo nuevo y la tecnología.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <div className="mb-10 text-center md:text-left">
-                                    <h2 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 mb-4">
-                                        {activeTab === 'home' ? <span>Lex <span className="text-rose-700">&</span> Passio</span> : 
-                                         activeTab === 'doctrina' ? 'Biblioteca de Doctrina' : 'Vanguardia Legal'}
-                                    </h2>
-                                    <p className="text-slate-600 max-w-2xl">
-                                        {activeTab === 'home' ? 'Donde la doctrina clásica encuentra los desafíos del futuro.' : 'Análisis jurídico profundo.'}
-                                    </p>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                    {filteredArticles.map(article => (
-                                        <ArticleCard key={article.id} article={article} onClick={(a) => { setSelectedArticle(a); window.scrollTo(0,0); }} />
-                                    ))}
-                                </div>
-                            </>
-                        )}
-                    </main>
+      </section>
 
-                    <footer className="bg-slate-900 text-slate-400 py-12 text-center text-xs">
-                        <p>© 2023 Lex et Passio. Lima, Perú.</p>
-                        <p className="mt-2 text-slate-600">Este portal es académico. No constituye asesoría legal.</p>
-                    </footer>
-                </div>
-            );
-        };
+      <aside class="sidebar">
+        <div class="card authors">
+          <div style="font-size:14px;font-weight:700">Equipo</div>
+          <div class="author">Wendell Odisio Luna — Estudiante, UPC</div>
+          <div class="author">Pamela Huaquira Aquino — Estudiante, UPN</div>
+          <div class="institutions">Universidad Peruana de Ciencias Aplicadas (UPC) · Universidad Privada del Norte (UPN)</div>
+        </div>
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+        <div class="card">
+          <div style="font-weight:700">Publicación</div>
+          <div class="muted" style="margin-top:6px">Lex et Passion — 2025</div>
+          <div style="margin-top:8px;font-size:13px">Repositorio listo para GitHub. Deploy sugerido: Vercel (Carpeta pública con este archivo y el PDF).</div>
+        </div>
+
+        <div class="card">
+          <div style="font-weight:700">Contacto</div>
+          <div class="muted" style="margin-top:6px">Proporcionar correo institucional o link a perfil para aparecer aquí.</div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      © Lex et Passion · 2025
+    </footer>
+  </div>
 </body>
 </html>
